@@ -1,7 +1,7 @@
-package server_test
+package httpServer_test
 
 import (
-	"github.com/jamieabc/go-simple-http-for-test/server"
+	httpServer "github.com/jamieabc/go-simple-http-for-test/http_server"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
@@ -12,7 +12,7 @@ import (
 
 func TestRun(t *testing.T) {
 	url := ":5566"
-	s := server.New(url)
+	s := httpServer.New(url)
 	defer s.Stop()
 
 	m := http.NewServeMux()
@@ -37,7 +37,7 @@ func TestRun(t *testing.T) {
 
 func TestStop(t *testing.T) {
 	url := ":5566"
-	s := server.New(url)
+	s := httpServer.New(url)
 
 	m := http.NewServeMux()
 	h := func(w http.ResponseWriter, _ *http.Request) {

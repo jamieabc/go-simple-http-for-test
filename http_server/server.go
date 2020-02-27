@@ -1,4 +1,4 @@
-package server
+package httpServer
 
 import (
 	"context"
@@ -14,7 +14,7 @@ type server struct {
 	srv *http.Server
 }
 
-// this way opens a server to listen actual connection, which I think not good
+// this way opens a http_server to listen actual connection, which I think not good
 // but I will write a test for this
 func (s server) Run(h http.Handler) {
 	s.srv.Handler = h

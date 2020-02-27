@@ -2,13 +2,13 @@ package main
 
 import (
 	"github.com/jamieabc/go-simple-http-for-test/handlers"
-	"github.com/jamieabc/go-simple-http-for-test/server"
+	httpServer "github.com/jamieabc/go-simple-http-for-test/http_server"
 	"os"
 	"os/signal"
 )
 
 func main() {
-	srv := server.New(":5566")
+	srv := httpServer.New(":5566")
 	srv.Run(handlers.New())
 
 	ch := make(chan os.Signal, 1)
