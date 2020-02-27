@@ -1,12 +1,11 @@
 package server
 
 import (
-	"io"
 	"net/http"
 )
 
 type Server interface {
-	Run()
+	Run(http.Handler)
 	Stop()
 }
 
@@ -16,12 +15,8 @@ type server struct {
 
 // this way opens a server to listen actual connection, which I think not good
 // but I will write a test for this
-func (s server) Run() {
-	handler := func(w http.ResponseWriter, _ *http.Request) {
-		_, _ = io.WriteString(w, "hello, world!\n")
-	}
-	http.HandleFunc("/hello", handler)
-	go http.ListenAndServe(s.addr, nil)
+func (s server) Run(h http.Handler) {
+	go http.ListenAndServe(s.addr, h)
 }
 
 func (s server) Stop() {
