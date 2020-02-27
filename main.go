@@ -1,15 +1,17 @@
 package main
 
 import (
-	"github.com/jamieabc/go-simple-http-for-test/handlers"
-	httpServer "github.com/jamieabc/go-simple-http-for-test/http_server"
+	"github.com/jamieabc/go-simple-http-for-test/servers"
 	"os"
 	"os/signal"
 )
 
 func main() {
-	srv := httpServer.New(":5566")
-	srv.Run(handlers.New())
+	//srvHttp := servers.NewHttp(":5566")
+	//srvHttp.Run(handlers.New())
+
+	srvRpc := servers.NewRpc(":9453")
+	srvRpc.Run(nil)
 
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, os.Interrupt)
