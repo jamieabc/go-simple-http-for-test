@@ -13,6 +13,7 @@ import (
 func TestRun(t *testing.T) {
 	url := ":5566"
 	s := server.New(url)
+	defer s.Stop()
 
 	m := http.NewServeMux()
 	h := func(w http.ResponseWriter, _ *http.Request) {
@@ -32,4 +33,23 @@ func TestRun(t *testing.T) {
 	data, err := ioutil.ReadAll(resp.Body)
 	assert.Nil(t, err, "wrong read")
 	assert.Equal(t, []byte("written\n"), data, "wrong content")
+}
+
+func TestStop(t *testing.T) {
+	url := ":5566"
+	s := server.New(url)
+
+	m := http.NewServeMux()
+	h := func(w http.ResponseWriter, _ *http.Request) {
+		_, _ = io.WriteString(w, "hello world\n")
+	}
+	m.HandleFunc("/", h)
+	srv := httptest.NewServer(m)
+	defer srv.Close()
+
+	s.Run(m)
+	s.Stop()
+
+	_, err := http.Get("http://localhost:5566/")
+	assert.NotNil(t, err, "wrong Stop")
 }

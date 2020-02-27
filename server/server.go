@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"net/http"
 )
 
@@ -10,21 +11,24 @@ type Server interface {
 }
 
 type server struct {
-	addr string
+	srv *http.Server
 }
 
 // this way opens a server to listen actual connection, which I think not good
 // but I will write a test for this
 func (s server) Run(h http.Handler) {
-	go http.ListenAndServe(s.addr, h)
+	s.srv.Handler = h
+	go s.srv.ListenAndServe()
 }
 
 func (s server) Stop() {
-	panic("implement me")
+	s.srv.Shutdown(context.TODO())
 }
 
 func New(addr string) Server {
 	return &server{
-		addr: addr,
+		srv: &http.Server{
+			Addr: addr,
+		},
 	}
 }
